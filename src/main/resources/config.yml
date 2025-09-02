@@ -1,0 +1,21 @@
+block_buster: beacon
+block_buster_name: "name"
+block_buster_lore:
+  - "line"
+buster_speed: 1
+buster_size: 1
+buster_go_down: true
+buster_go_up: false
+destroy_block_after_use: true
+drop_destroyed_block: false
+chance_to_drop_destroyed_block: 50
+black_list_materials: [bedrock, whatever]
+black_list_worlds: [event, fun]
+cooldown_for_each_use: 10
+
+messages:
+  buster_placed: "Starting to wipe the chunk.."
+  buster_end: "The chunk was wipe !"
+  blacklist_world: "You can't place a block buster in this world"
+  cooldown_error: "You have to wait %time% before using again a blockbuster"
+  no_permission: "You don't have the permission to use blockbuster .."
