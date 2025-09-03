@@ -8,7 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -38,8 +37,7 @@ public class BlockBuster {
                         cancel();
                     syncRunBuster(busterData);
                 }
-            }.runTaskTimer(ChunkBuster.getChunkBuster(), 0L, 10L);
-
+            }.runTaskTimer(ChunkBuster.getChunkBuster(), 0L, busterConfig.getBusterSpeed());
         });
     }
 

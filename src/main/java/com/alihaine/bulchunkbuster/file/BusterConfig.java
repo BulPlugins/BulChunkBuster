@@ -3,6 +3,7 @@ package com.alihaine.bulchunkbuster.file;
 import com.alihaine.bulchunkbuster.ChunkBuster;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -15,7 +16,7 @@ public class BusterConfig {
     private final String blockBusterName;
     private final List<String> blockBusterLore;
 
-    int busterSpeed;
+    long busterSpeed;
     int busterSize;
 
     boolean busterDown;
@@ -49,7 +50,7 @@ public class BusterConfig {
         this.blockBusterName = this.config.getString("block_buster_name");
         this.blockBusterLore = this.config.getStringList("block_buster_lore");
 
-        this.busterSpeed = this.config.getInt("buster_speed");
+        this.busterSpeed = this.config.getInt("buster_speed") * 20L;
         this.busterSize = this.config.getInt("buster_size");
         this.busterDown = this.config.getBoolean("buster_down");
         this.busterUp = this.config.getBoolean("buster_up");
@@ -83,4 +84,35 @@ public class BusterConfig {
         return this.materialBuster == material;
     }
 
+    public boolean isBlacklistedWorld(World world) {
+        return this.blockListWorlds.contains(world.getName());
+    }
+
+    public long getBusterSpeed() { return this.busterSpeed; }
+
+    public int getBusterSize() { return this.busterSize; }
+
+    public boolean getBusterDown() {
+        return this.busterDown;
+    }
+
+    public boolean getBusterUp() {
+        return this.busterUp;
+    }
+
+    public boolean getDestroyBlockBuster() {
+        return this.destroyBlockBuster;
+    }
+
+    public boolean getDropDestroyedBlock() {
+        return this.dropDestroyedBlock;
+    }
+
+    public double getChanceDropDestroyedBlock() {
+        return this.chanceDropDestroyedBlock;
+    }
+
+    public int getCooldown() {
+        return this.cooldown;
+    }
 }
