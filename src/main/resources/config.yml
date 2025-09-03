@@ -10,12 +10,14 @@ destroy_block_after_use: true
 drop_destroyed_block: false
 chance_to_drop_destroyed_block: 50
 black_list_materials: [bedrock, whatever]
-black_list_worlds: [event, fun]
+black_list_worlds: [event, exampleNameWorld]
 cooldown_for_each_use: 10
 
 messages:
-  buster_placed: "Starting to wipe the chunk.."
-  buster_end: "The chunk was wipe !"
-  blacklist_world: "You can't place a block buster in this world"
-  cooldown_error: "You have to wait %time% before using again a blockbuster"
-  no_permission: "You don't have the permission to use blockbuster .."
+  buster_placed: "&eStarting to bust the chunk.."
+  buster_end: "&aThe chunk was bust !"
+  buster_receive: "&You receive a block buster"
+  buster_give: "&aBlock buster was given"
+  blacklist_world: "&cYou can't place a block buster in this world"
+  cooldown_error: "&cYou have to wait &e%time% &cbefore using again a blockbuster"
+  no_permission: "&cYou don't have the permission to use blockbuster .."

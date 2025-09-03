@@ -73,7 +73,7 @@ public class BusterConfig {
 
         ConfigurationSection configSection = this.config.getConfigurationSection("messages");
         for (String key : configSection.getKeys(false))
-            this.messages.put(key, configSection.getString(key));
+            this.messages.put(key, configSection.getString(key).replaceAll("&", "§"));
     }
 
     public boolean isMaterialBlacklisted(Material material) {
@@ -114,5 +114,9 @@ public class BusterConfig {
 
     public int getCooldown() {
         return this.cooldown;
+    }
+
+    public String getMessage(String key) {
+        return this.messages.get(key);
     }
 }

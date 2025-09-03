@@ -7,6 +7,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -17,10 +18,12 @@ public class BlockBuster {
     private final BusterConfig busterConfig = ChunkBuster.getBusterConfig();
     private final Chunk chunk;
     private final Location location;
+    private final Player player;
 
-    public BlockBuster(Chunk chunk,  Location location) {
+    public BlockBuster(Chunk chunk,  Location location, Player player) {
         this.chunk = chunk;
         this.location = location;
+        this.player = player;
         this.runBuster();
     }
 
@@ -33,14 +36,21 @@ public class BlockBuster {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (busterData.isDone())
+                    if (busterData.isDone()) {
+                        player.sendMessage(busterConfig.getMessage("buster_end"));
                         cancel();
+                    }
                     syncRunBuster(busterData);
                 }
             }.runTaskTimer(ChunkBuster.getChunkBuster(), 0L, busterConfig.getBusterSpeed());
         });
     }
 
+    /*
+     * All the calculations and checks are done asynchronously, instead of
+     * Iterating EVERY block in the main thread, I do that in another one.
+     * So, the sync task will iterate only the necessary block (not air, or blacklisted blocks)
+     */
     public BusterData asyncRunBusterSetup(Chunk chunk) {
         final List<Block> blockToClear = new ArrayList<>();
         BitSet dropFlags = new BitSet();
