@@ -2,6 +2,7 @@ package com.alihaine.bulchunkbuster.buster;
 
 import com.alihaine.bulchunkbuster.ChunkBuster;
 import com.alihaine.bulchunkbuster.file.BusterConfig;
+import com.alihaine.bulchunkbuster.utils.BlockUtils;
 import com.alihaine.bulchunkbuster.utils.MathUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -50,11 +51,11 @@ public class BlockBuster {
     }
 
     private void asyncFillCurrentY(int y, BusterData busterData) {
-        for (int z = 16; z > 0; z--) {
-            for (int x = 16; x > 0; x--) {
+        for (int z = 15; z >= 0; z--) {
+            for (int x = 15; x >= 0; x--) {
                 Block block = chunk.getBlock(x, y, z);
-                if (block.getType() == Material.AIR || busterConfig.isMaterialBlacklisted(block.getType()))
-                    continue;
+                Material mat = BlockUtils.getMaterial(block);
+                if (mat == Material.AIR || busterConfig.isMaterialBlacklisted(mat)) continue;
                 busterData.getBlocks().add(block);
                 if (MathUtils.getRandomDouble() < this.busterConfig.getChanceDropDestroyedBlock())
                     busterData.getDropFlags().set(busterData.getBlocks().size()-1);

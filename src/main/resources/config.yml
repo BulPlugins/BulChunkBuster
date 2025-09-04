@@ -14,7 +14,9 @@ chance_to_drop_destroyed_block: 10.0
 
 black_list_materials: [bedrock, spawner, chest]
 black_list_worlds: [event, exampleNameWorld]
+
 cooldown_for_each_use: 10
+server_y_min: 0
 
 messages:
   buster_placed: "&eStarting to bust the chunk.."
