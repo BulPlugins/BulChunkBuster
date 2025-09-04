@@ -24,5 +24,5 @@ messages:
   buster_receive: "&You receive a block buster"
   buster_give: "&aBlock buster was given"
   blacklist_world: "&cYou can't place a block buster in this world"
-  cooldown_error: "&cYou have to wait &e%time% &cbefore using again a blockbuster"
+  cooldown_error: "&cYou have to wait &e%time% seconds &cbefore using again a blockbuster"
   no_permission: "&cYou don't have the permission to use blockbuster .."

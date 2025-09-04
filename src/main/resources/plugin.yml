@@ -2,3 +2,12 @@ name: BulChunkBuster
 main: com.alihaine.bulchunkbuster.ChunkBuster
 version: 1.0
 author: AliHaine
+commands:
+  bulchunkbuster:
+    description: Main command
+    aliases:
+      - bchunkbuster
+      - bcb
+    permission: bulchunkbuster.admin
+    permission-message: You do not have permission!
+    usage: /<bchunkbuster> give <player> (optional amount)

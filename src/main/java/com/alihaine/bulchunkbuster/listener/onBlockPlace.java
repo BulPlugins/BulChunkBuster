@@ -10,8 +10,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 public class onBlockPlace implements Listener {
     private final BusterConfig busterConfig = ChunkBuster.getBusterConfig();
+    private final HashMap<String, Long> cooldowns = new HashMap<>();
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
@@ -28,9 +32,24 @@ public class onBlockPlace implements Listener {
             player.sendMessage(busterConfig.getMessage("blacklist_world"));
             return;
         }
+        long cooldown = this.isOnCooldown(player.getName());
+        if (cooldown > 0) {
+            player.sendMessage(busterConfig.getMessage("cooldown_error").replace("%time%", String.valueOf(cooldown)));
+            return;
+        }
         if (busterConfig.getDestroyBlockBuster())
-         event.getItemInHand().setAmount(event.getItemInHand().getAmount() - 1);
+            event.getItemInHand().setAmount(event.getItemInHand().getAmount() - 1);
         player.sendMessage(busterConfig.getMessage("buster_placed"));
+        this.cooldowns.put(player.getName(), System.currentTimeMillis());
         new BlockBuster(block.getChunk(), block.getLocation(), player);
+    }
+
+    private long isOnCooldown(String name) {
+        if (!this.cooldowns.containsKey(name))
+            return 0;
+
+        long diff = System.currentTimeMillis() - this.cooldowns.get(name);
+        long remaining = this.busterConfig.getCooldown() - diff; // ms left
+        return Math.max(0, remaining) / 1000;
     }
 }

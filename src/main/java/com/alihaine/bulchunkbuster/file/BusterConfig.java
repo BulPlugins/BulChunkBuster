@@ -28,7 +28,7 @@ public class BusterConfig {
     final List<Material> blackListMaterials = new ArrayList<>();
     final List<String> blockListWorlds;
 
-    int cooldown;
+    long cooldown;
 
     private final HashMap<String, String> messages = new HashMap<>();
 
@@ -79,7 +79,7 @@ public class BusterConfig {
         }
         this.blockListWorlds = config.getStringList("block_list_worlds");
 
-        this.cooldown = config.getInt("cooldown_for_each_use");
+        this.cooldown = config.getInt("cooldown_for_each_use") * 1000L;
 
         ConfigurationSection configSection = config.getConfigurationSection("messages");
         for (String key : configSection.getKeys(false))
@@ -120,7 +120,7 @@ public class BusterConfig {
         return this.chanceDropDestroyedBlock;
     }
 
-    public int getCooldown() {
+    public long getCooldown() {
         return this.cooldown;
     }
 
