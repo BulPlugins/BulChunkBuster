@@ -17,20 +17,19 @@ public class onBlockPlace implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
         final Block block = event.getBlock();
         final Player player = event.getPlayer();
-        if (!busterConfig.isBlockBuster(block.getType()))
+        if (!busterConfig.isBlockBuster(event.getItemInHand()))
             return;
+        event.setCancelled(true);
         if (!player.hasPermission("bulchunkbuster.use")) {
             player.sendMessage(busterConfig.getMessage("no_permission"));
-            event.setCancelled(true);
             return;
         }
         if (busterConfig.isBlacklistedWorld(block.getLocation().getWorld())) {
             player.sendMessage(busterConfig.getMessage("blacklist_world"));
-            event.setCancelled(true);
             return;
         }
         if (busterConfig.getDestroyBlockBuster())
-            block.setType(Material.AIR);
+         event.getItemInHand().setAmount(event.getItemInHand().getAmount() - 1);
         player.sendMessage(busterConfig.getMessage("buster_placed"));
         new BlockBuster(block.getChunk(), block.getLocation(), player);
     }

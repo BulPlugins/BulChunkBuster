@@ -2,14 +2,17 @@ block_buster: beacon
 block_buster_name: "name"
 block_buster_lore:
   - "line"
+block_buster_check_all: true
+
 buster_speed: 1
-buster_size: 1
-buster_go_down: true
-buster_go_up: false
+buster_size: 4
+buster_sound: EXPLODE
+buster_effect: EXPLOSION_HUGE
 destroy_block_after_use: true
 drop_destroyed_block: false
-chance_to_drop_destroyed_block: 50
-black_list_materials: [bedrock, whatever]
+chance_to_drop_destroyed_block: 10.0
+
+black_list_materials: [bedrock, spawner, chest]
 black_list_worlds: [event, exampleNameWorld]
 cooldown_for_each_use: 10
 

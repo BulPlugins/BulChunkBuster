@@ -1,11 +1,10 @@
 package com.alihaine.bulchunkbuster.file;
 
 import com.alihaine.bulchunkbuster.ChunkBuster;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,12 +14,12 @@ public class BusterConfig {
     private final Material materialBuster;
     private final String blockBusterName;
     private final List<String> blockBusterLore;
+    private final boolean blockBusterCheckAll;
 
-    long busterSpeed;
-    int busterSize;
-
-    boolean busterDown;
-    boolean busterUp;
+    private final long busterSpeed;
+    private final int busterSize;
+    private Sound busterSound;
+    private Effect busterEffect;
 
     boolean destroyBlockBuster;
     boolean dropDestroyedBlock;
@@ -31,35 +30,46 @@ public class BusterConfig {
 
     int cooldown;
 
-    private final HashMap<String, String> messages = new HashMap();
-
-    private final FileConfiguration config;
+    private final HashMap<String, String> messages = new HashMap<>();
 
     public BusterConfig(ChunkBuster chunkBuster) {
         chunkBuster.saveDefaultConfig();
-        this.config = chunkBuster.getConfig();
+        final FileConfiguration config = chunkBuster.getConfig();
 
         //Initialize config elements
-        final String materialAsString = this.config.getString("block_buster");
+        final String materialAsString = config.getString("block_buster");
         try {
             this.materialBuster = Material.getMaterial(materialAsString.toUpperCase());
         } catch (Exception e) {
             Bukkit.getLogger().severe(ChunkBuster.PREFIX + " The material " + materialAsString + " was not found or don't exist");
             throw new RuntimeException();
         }
-        this.blockBusterName = this.config.getString("block_buster_name");
-        this.blockBusterLore = this.config.getStringList("block_buster_lore");
+        this.blockBusterName = config.getString("block_buster_name");
+        this.blockBusterLore = config.getStringList("block_buster_lore");
+        this.blockBusterCheckAll = config.getBoolean("block_buster_check_all");
 
-        this.busterSpeed = this.config.getInt("buster_speed") * 20L;
-        this.busterSize = this.config.getInt("buster_size");
-        this.busterDown = this.config.getBoolean("buster_down");
-        this.busterUp = this.config.getBoolean("buster_up");
+        this.busterSpeed = config.getInt("buster_speed") * 20L;
+        this.busterSize = config.getInt("buster_size");
 
-        this.destroyBlockBuster = this.config.getBoolean("destroy_block_after_use");
-        this.dropDestroyedBlock = this.config.getBoolean("drop_destroyed_block");
-        this.chanceDropDestroyedBlock = this.config.getDouble("chance_to_drop_destroyed_block");
+        final String soundAsString = config.getString("buster_sound");
+        try {
+            this.busterSound = Sound.valueOf(soundAsString);
+        } catch (IllegalArgumentException e) {
+            Bukkit.getLogger().warning("The sound " + soundAsString + " don't exist in your minecraft server version.");
+        }
 
-        final List<String> blackListMaterialsString = this.config.getStringList("black_list_materials");
+        final String effectAsString = config.getString("buster_effect");
+        try {
+            this.busterEffect = Effect.valueOf(effectAsString);
+        } catch (IllegalArgumentException e) {
+            Bukkit.getLogger().warning("The effect " + effectAsString + " don't exist in your minecraft server version.");
+        }
+
+        this.destroyBlockBuster = config.getBoolean("destroy_block_after_use");
+        this.dropDestroyedBlock = config.getBoolean("drop_destroyed_block");
+        this.chanceDropDestroyedBlock = config.getDouble("chance_to_drop_destroyed_block");
+
+        final List<String> blackListMaterialsString = config.getStringList("black_list_materials");
         for (String materialStr : blackListMaterialsString) {
             try {
                 this.blackListMaterials.add(Material.getMaterial(materialStr.toUpperCase()));
@@ -67,11 +77,11 @@ public class BusterConfig {
                 Bukkit.getLogger().warning(ChunkBuster.PREFIX + " The material " + materialStr + " was not found or don't exist (black list material)");
             }
         }
-        this.blockListWorlds = this.config.getStringList("block_list_worlds");
+        this.blockListWorlds = config.getStringList("block_list_worlds");
 
-        this.cooldown = this.config.getInt("cooldown_for_each_use");
+        this.cooldown = config.getInt("cooldown_for_each_use");
 
-        ConfigurationSection configSection = this.config.getConfigurationSection("messages");
+        ConfigurationSection configSection = config.getConfigurationSection("messages");
         for (String key : configSection.getKeys(false))
             this.messages.put(key, configSection.getString(key).replaceAll("&", "§"));
     }
@@ -80,8 +90,10 @@ public class BusterConfig {
         return this.blackListMaterials.contains(material);
     }
 
-    public boolean isBlockBuster(Material material) {
-        return this.materialBuster == material;
+    public boolean isBlockBuster(ItemStack itemStack) {
+        if (this.blockBusterCheckAll)
+            return itemStack.getType().equals(this.materialBuster) && itemStack.getItemMeta().getDisplayName() != null && itemStack.getItemMeta().getDisplayName().equals(this.blockBusterName);
+        return itemStack.getType().equals(this.materialBuster);
     }
 
     public boolean isBlacklistedWorld(World world) {
@@ -92,13 +104,9 @@ public class BusterConfig {
 
     public int getBusterSize() { return this.busterSize; }
 
-    public boolean getBusterDown() {
-        return this.busterDown;
-    }
+    public Sound getBusterSound() { return this.busterSound; }
 
-    public boolean getBusterUp() {
-        return this.busterUp;
-    }
+    public Effect getBusterEffect() { return this.busterEffect; }
 
     public boolean getDestroyBlockBuster() {
         return this.destroyBlockBuster;

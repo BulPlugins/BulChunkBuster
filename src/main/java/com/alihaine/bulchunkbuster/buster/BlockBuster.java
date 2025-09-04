@@ -2,17 +2,11 @@ package com.alihaine.bulchunkbuster.buster;
 
 import com.alihaine.bulchunkbuster.ChunkBuster;
 import com.alihaine.bulchunkbuster.file.BusterConfig;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import com.alihaine.bulchunkbuster.utils.MathUtils;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.List;
 
 public class BlockBuster {
     private final BusterConfig busterConfig = ChunkBuster.getBusterConfig();
@@ -29,10 +23,7 @@ public class BlockBuster {
 
     public void runBuster() {
         Bukkit.getScheduler().runTaskAsynchronously(ChunkBuster.getChunkBuster(), () -> {
-            final BusterData busterData = asyncRunBusterSetup(this.chunk);
-            if (busterData.getBlocks().isEmpty())
-                return;
-            Bukkit.getLogger().warning("[ChunkBuster] " + busterData.getBlocks().size());
+            final BusterData busterData = asyncRunBusterSetup();
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -51,33 +42,52 @@ public class BlockBuster {
      * Iterating EVERY block in the main thread, I do that in another one.
      * So, the sync task will iterate only the necessary block (not air, or blacklisted blocks)
      */
-    public BusterData asyncRunBusterSetup(Chunk chunk) {
-        final List<Block> blockToClear = new ArrayList<>();
-        BitSet dropFlags = new BitSet();
+    public BusterData asyncRunBusterSetup() {
+        final BusterData bustersData = new BusterData(this.chunk, location.getBlockY()-1);
+        for (int y = this.location.getBlockY() - 1; y >= 0; y--)
+            this.asyncFillCurrentY(y, bustersData);
+        return bustersData;
+    }
 
-        for (int y = this.location.getBlockY()-1; y > 0; y--) {
-            for (int z = 16; z > 0; z--) {
-                for (int x = 16; x > 0; x--) {
-                    Block block = chunk.getBlock(x, y, z);
-                    if (block.getType() == Material.AIR || busterConfig.isMaterialBlacklisted(block.getType()))
-                        continue;
-                    blockToClear.add(block);
-                    dropFlags.set(blockToClear.size()-1);
-                }
+    private void asyncFillCurrentY(int y, BusterData busterData) {
+        for (int z = 16; z > 0; z--) {
+            for (int x = 16; x > 0; x--) {
+                Block block = chunk.getBlock(x, y, z);
+                if (block.getType() == Material.AIR || busterConfig.isMaterialBlacklisted(block.getType()))
+                    continue;
+                busterData.getBlocks().add(block);
+                if (MathUtils.getRandomDouble() < this.busterConfig.getChanceDropDestroyedBlock())
+                    busterData.getDropFlags().set(busterData.getBlocks().size()-1);
             }
         }
-        return new BusterData(blockToClear, dropFlags);
     }
 
     public void syncRunBuster(BusterData busterData) {
-        System.out.println("Run task");
-        for (int i = 0; i < 255 && busterData.hasNext(); i++) {
-            Block block = busterData.nextBlock();
-            if (busterData.shouldDrop())
-                block.breakNaturally();
-            else
-                block.setType(Material.AIR);
-            busterData.advance();
-        }
+        syncPlayAnim(busterData);
+        for (int i = 0; busterData.hasNext() && i < busterConfig.getBusterSize()*256; i++)
+            syncRunBusterAction(busterData);
+        syncRunBusterAction(busterData);
+    }
+
+    private void syncRunBusterAction(BusterData busterData) {
+        if (!busterData.hasNext())
+            return;
+        Block block = busterData.nextBlock();
+        if (busterData.shouldDrop())
+            block.breakNaturally();
+        else
+            block.setType(Material.AIR);
+        busterData.advance();
+    }
+
+    private void syncPlayAnim(BusterData busterData) {
+        final Location location = busterData.getMiddleLocation();
+        if (!busterData.hasNext())
+            return;
+        if (this.busterConfig.getBusterSound() != null)
+            location.getWorld().playSound(location, this.busterConfig.getBusterSound(), 0.5F, 1.0F);
+        if (this.busterConfig.getBusterEffect() != null)
+            location.getWorld().playEffect(location, this.busterConfig.getBusterEffect(), 0);
+        location.add(0, -busterConfig.getBusterSize(), 0);
     }
 }
