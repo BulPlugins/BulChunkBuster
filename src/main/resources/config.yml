@@ -1,7 +1,13 @@
+#Download page: n/a
+#Config explanation: https://github.com/BulPlugins/BulChunkBuster/wiki
+#Discord to get help: https://discord.gg/JAe62PEaYv
+
 block_buster: beacon
-block_buster_name: "name"
+block_buster_name: "&eBulChunkBuster"
 block_buster_lore:
-  - "line"
+  - ""
+  - "&aPlace it to BUST the chunk !"
+
 block_buster_check_all: true
 
 buster_speed: 1
@@ -9,7 +15,6 @@ buster_size: 4
 buster_sound: EXPLODE
 buster_effect: EXPLOSION_HUGE
 destroy_block_after_use: true
-drop_destroyed_block: false
 chance_to_drop_destroyed_block: 10.0
 
 black_list_materials: [bedrock, spawner, chest]
@@ -21,7 +26,7 @@ server_y_min: 0
 messages:
   buster_placed: "&eStarting to bust the chunk.."
   buster_end: "&aThe chunk was bust !"
-  buster_receive: "&You receive a block buster"
+  buster_receive: "&You receive %amount% block buster"
   buster_give: "&aBlock buster was given"
   blacklist_world: "&cYou can't place a block buster in this world"
   cooldown_error: "&cYou have to wait &e%time% seconds &cbefore using again a blockbuster"

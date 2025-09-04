@@ -5,6 +5,7 @@ import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,13 +23,13 @@ public class BusterConfig {
     private Effect busterEffect;
 
     boolean destroyBlockBuster;
-    boolean dropDestroyedBlock;
     double chanceDropDestroyedBlock;
 
     final List<Material> blackListMaterials = new ArrayList<>();
     final List<String> blockListWorlds;
 
-    long cooldown;
+    private final long cooldown;
+    private final int serverYMin;
 
     private final HashMap<String, String> messages = new HashMap<>();
 
@@ -66,7 +67,6 @@ public class BusterConfig {
         }
 
         this.destroyBlockBuster = config.getBoolean("destroy_block_after_use");
-        this.dropDestroyedBlock = config.getBoolean("drop_destroyed_block");
         this.chanceDropDestroyedBlock = config.getDouble("chance_to_drop_destroyed_block");
 
         final List<String> blackListMaterialsString = config.getStringList("black_list_materials");
@@ -80,6 +80,7 @@ public class BusterConfig {
         this.blockListWorlds = config.getStringList("block_list_worlds");
 
         this.cooldown = config.getInt("cooldown_for_each_use") * 1000L;
+        this.serverYMin = config.getInt("server_y_min");
 
         ConfigurationSection configSection = config.getConfigurationSection("messages");
         for (String key : configSection.getKeys(false))
@@ -112,10 +113,6 @@ public class BusterConfig {
         return this.destroyBlockBuster;
     }
 
-    public boolean getDropDestroyedBlock() {
-        return this.dropDestroyedBlock;
-    }
-
     public double getChanceDropDestroyedBlock() {
         return this.chanceDropDestroyedBlock;
     }
@@ -124,7 +121,18 @@ public class BusterConfig {
         return this.cooldown;
     }
 
+    public int getServerYMin() { return this.serverYMin; }
+
     public String getMessage(String key) {
         return this.messages.get(key);
+    }
+
+    public ItemStack getBlockBuster(int amount) {
+        final ItemStack itemBuster = new ItemStack(this.materialBuster, amount);
+        final ItemMeta meta = itemBuster.getItemMeta();
+        meta.setDisplayName(this.blockBusterName);
+        meta.setLore(this.blockBusterLore);
+        itemBuster.setItemMeta(meta);
+        return itemBuster;
     }
 }

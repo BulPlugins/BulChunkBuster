@@ -3,7 +3,6 @@ package com.alihaine.bulchunkbuster.listener;
 import com.alihaine.bulchunkbuster.ChunkBuster;
 import com.alihaine.bulchunkbuster.buster.BlockBuster;
 import com.alihaine.bulchunkbuster.file.BusterConfig;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,7 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 public class onBlockPlace implements Listener {
     private final BusterConfig busterConfig = ChunkBuster.getBusterConfig();
@@ -47,7 +45,6 @@ public class onBlockPlace implements Listener {
     private long isOnCooldown(String name) {
         if (!this.cooldowns.containsKey(name))
             return 0;
-
         long diff = System.currentTimeMillis() - this.cooldowns.get(name);
         long remaining = this.busterConfig.getCooldown() - diff; // ms left
         return Math.max(0, remaining) / 1000;

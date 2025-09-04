@@ -10,4 +10,4 @@ commands:
       - bcb
     permission: bulchunkbuster.admin
     permission-message: You do not have permission!
-    usage: /<bchunkbuster> give <player> (optional amount)
+    usage: /bchunkbuster <player> (optional amount)

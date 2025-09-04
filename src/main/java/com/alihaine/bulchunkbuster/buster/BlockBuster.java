@@ -45,7 +45,7 @@ public class BlockBuster {
      */
     public BusterData asyncRunBusterSetup() {
         final BusterData bustersData = new BusterData(this.chunk, location.getBlockY()-1);
-        for (int y = this.location.getBlockY() - 1; y >= 0; y--)
+        for (int y = this.location.getBlockY() - 1; y >= busterConfig.getServerYMin(); y--)
             this.asyncFillCurrentY(y, bustersData);
         return bustersData;
     }
@@ -57,7 +57,7 @@ public class BlockBuster {
                 Material mat = BlockUtils.getMaterial(block);
                 if (mat == Material.AIR || busterConfig.isMaterialBlacklisted(mat)) continue;
                 busterData.getBlocks().add(block);
-                if (MathUtils.getRandomDouble() < this.busterConfig.getChanceDropDestroyedBlock())
+                if (this.busterConfig.getChanceDropDestroyedBlock() > 0.0 && MathUtils.getRandomDouble() < this.busterConfig.getChanceDropDestroyedBlock())
                     busterData.getDropFlags().set(busterData.getBlocks().size()-1);
             }
         }
