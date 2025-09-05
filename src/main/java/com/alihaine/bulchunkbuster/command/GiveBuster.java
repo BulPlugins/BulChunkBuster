@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class GiveBuster implements CommandExecutor {
-
     private final BusterConfig busterConfig = ChunkBuster.getBusterConfig();
 
     @Override

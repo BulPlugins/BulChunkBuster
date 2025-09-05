@@ -2,7 +2,6 @@ package com.alihaine.bulchunkbuster.buster;
 
 import com.alihaine.bulchunkbuster.ChunkBuster;
 import com.alihaine.bulchunkbuster.file.BusterConfig;
-import com.alihaine.bulchunkbuster.utils.BlockUtils;
 import com.alihaine.bulchunkbuster.utils.MathUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -54,7 +53,7 @@ public class BlockBuster {
         for (int z = 15; z >= 0; z--) {
             for (int x = 15; x >= 0; x--) {
                 Block block = chunk.getBlock(x, y, z);
-                Material mat = BlockUtils.getMaterial(block);
+                Material mat = block.getType();
                 if (mat == Material.AIR || busterConfig.isMaterialBlacklisted(mat)) continue;
                 busterData.getBlocks().add(block);
                 if (this.busterConfig.getChanceDropDestroyedBlock() > 0.0 && MathUtils.getRandomDouble() < this.busterConfig.getChanceDropDestroyedBlock())

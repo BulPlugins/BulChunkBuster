@@ -10,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BusterConfig {
     private final Material materialBuster;
@@ -45,8 +46,10 @@ public class BusterConfig {
             Bukkit.getLogger().severe(ChunkBuster.PREFIX + " The material " + materialAsString + " was not found or don't exist");
             throw new RuntimeException();
         }
-        this.blockBusterName = config.getString("block_buster_name");
-        this.blockBusterLore = config.getStringList("block_buster_lore");
+        this.blockBusterName = config.getString("block_buster_name").replaceAll("&", "§");
+        this.blockBusterLore = config.getStringList("block_buster_lore").stream()
+                .map(line -> line.replace("&", "§"))
+                .collect(Collectors.toList());
         this.blockBusterCheckAll = config.getBoolean("block_buster_check_all");
 
         this.busterSpeed = config.getInt("buster_speed") * 20L;

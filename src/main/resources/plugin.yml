@@ -1,7 +1,8 @@
 name: BulChunkBuster
 main: com.alihaine.bulchunkbuster.ChunkBuster
-version: 1.0
+version: ${version}
 author: AliHaine
+api-version: 1.13
 commands:
   bulchunkbuster:
     description: Main command

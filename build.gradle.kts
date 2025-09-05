@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 group = "org.example"
@@ -18,6 +19,20 @@ dependencies {
     implementation("org.bstats:bstats-bukkit:3.0.2")
 }
 
-tasks.test {
-    useJUnitPlatform()
+//Need to include and relocate bStats
+tasks {
+    //Replace the version in plugin.yml
+    processResources {
+        filesMatching("plugin.yml") {
+            expand(project.properties)
+        }
+    }
+    withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+        archiveClassifier.set("")
+        minimize()
+        relocate("org.bstats", "com.alihaine.bulchunkbuster.libs.bstats")
+    }
+    build {
+        dependsOn(shadowJar)
+    }
 }
