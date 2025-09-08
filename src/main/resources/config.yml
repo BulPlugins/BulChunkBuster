@@ -7,8 +7,10 @@ block_buster_name: "&eBulChunkBuster"
 block_buster_lore:
   - ""
   - "&aPlace it to BUST the chunk !"
-
 block_buster_check_all: true
+
+block_buster_sneak_confirmation: false
+block_buster_chat_confirmation: true
 
 buster_speed: 1
 buster_size: 4
@@ -23,6 +25,10 @@ black_list_worlds: [event, exampleNameWorld]
 cooldown_for_each_use: 10
 server_y_min: 0
 
+#Enable the claim system you use.
+only_in_faction_claim: false #saberFaction, factionUUID
+only_in_griefprevention_claim: false #https://www.spigotmc.org/resources/1884/
+
 messages:
   buster_placed: "&eStarting to bust the chunk.."
   buster_end: "&aThe chunk was bust !"
@@ -30,4 +36,8 @@ messages:
   buster_give: "&aBlock buster was given"
   blacklist_world: "&cYou can't place a block buster in this world"
   cooldown_error: "&cYou have to wait &e%time% seconds &cbefore using again a blockbuster"
+  sneak_confirmation_error: "&cYou must sneak while placing the block to activate the buster."
+  chat_confirmation_wait: "&eTo confirm that you want to use the chunk buster, type &aBUSTER &ein chat."
+  chat_confirmation_error: "&cYou did not confirm in chat, buster canceled."
+  chat_confirmation_block_error: "&cThe placed chunk buster was destroyed before confirmation."
   no_permission: "&cYou don't have the permission to use blockbuster .."

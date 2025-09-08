@@ -30,9 +30,19 @@ public class onBlockPlace implements Listener {
             player.sendMessage(busterConfig.getMessage("blacklist_world"));
             return;
         }
+        if (this.busterConfig.getBlockBusterSneakConfirmation() && !player.isSneaking()) {
+            player.sendMessage(busterConfig.getMessage("sneak_confirmation_error"));
+            return;
+        }
         long cooldown = this.isOnCooldown(player.getName());
         if (cooldown > 0) {
             player.sendMessage(busterConfig.getMessage("cooldown_error").replace("%time%", String.valueOf(cooldown)));
+            return;
+        }
+        if (this.busterConfig.getBlockBusterChatConfirmation()) {
+            player.sendMessage(busterConfig.getMessage("chat_confirmation_wait"));
+            ChunkBuster.getChunkBuster().addPlayerWaitForChatConfirmation(player, block.getLocation());
+            event.setCancelled(false);
             return;
         }
         if (busterConfig.getDestroyBlockBuster())

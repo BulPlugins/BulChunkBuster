@@ -18,6 +18,9 @@ public class BusterConfig {
     private final List<String> blockBusterLore;
     private final boolean blockBusterCheckAll;
 
+    private final boolean blockBusterSneakConfirmation;
+    private final boolean blockBusterChatConfirmation;
+
     private final long busterSpeed;
     private final int busterSize;
     private Sound busterSound;
@@ -51,6 +54,9 @@ public class BusterConfig {
                 .map(line -> line.replace("&", "§"))
                 .collect(Collectors.toList());
         this.blockBusterCheckAll = config.getBoolean("block_buster_check_all");
+
+        this.blockBusterSneakConfirmation = config.getBoolean("block_buster_sneak_confirmation");
+        this.blockBusterChatConfirmation = config.getBoolean("block_buster_chat_confirmation");
 
         this.busterSpeed = config.getInt("buster_speed") * 20L;
         this.busterSize = config.getInt("buster_size");
@@ -102,6 +108,16 @@ public class BusterConfig {
 
     public boolean isBlacklistedWorld(World world) {
         return this.blockListWorlds.contains(world.getName());
+    }
+
+    public Material getMaterialBuster() { return this.materialBuster; }
+
+    public boolean getBlockBusterSneakConfirmation() {
+        return this.blockBusterSneakConfirmation;
+    }
+
+    public boolean getBlockBusterChatConfirmation() {
+        return this.blockBusterChatConfirmation;
     }
 
     public long getBusterSpeed() { return this.busterSpeed; }
