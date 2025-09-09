@@ -15,7 +15,7 @@
 Ultra-light, ultra-fast, highly optimized. Calculations and checks are done asynchronously, ensuring that the main Minecraft thread has the minimal workload (significantly reduced).
 
 <p align="center">
-    <img src="./workflow/gifanim.gif" width="256">
+    <img src="./workflow/gifanim.gif" width="512">
 </p>
 
 ### Metrics
