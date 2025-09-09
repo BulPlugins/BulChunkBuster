@@ -3,6 +3,8 @@ package com.alihaine.bulchunkbuster.listener;
 import com.alihaine.bulchunkbuster.ChunkBuster;
 import com.alihaine.bulchunkbuster.buster.BlockBuster;
 import com.alihaine.bulchunkbuster.file.BusterConfig;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -40,14 +42,13 @@ public class onBlockPlace implements Listener {
             return;
         }
         if (this.busterConfig.getBlockBusterChatConfirmation()) {
-            player.sendMessage(busterConfig.getMessage("chat_confirmation_wait"));
+            this.busterConfig.sendChatConfirmationComponent(player);
             ChunkBuster.getChunkBuster().addPlayerWaitForChatConfirmation(player, block.getLocation());
             event.setCancelled(false);
             return;
         }
         if (busterConfig.getDestroyBlockBuster())
             event.getItemInHand().setAmount(event.getItemInHand().getAmount() - 1);
-        player.sendMessage(busterConfig.getMessage("buster_placed"));
         this.cooldowns.put(player.getName(), System.currentTimeMillis());
         new BlockBuster(block.getChunk(), block.getLocation(), player);
     }

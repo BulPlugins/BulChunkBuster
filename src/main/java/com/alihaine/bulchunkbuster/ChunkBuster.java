@@ -1,9 +1,9 @@
 package com.alihaine.bulchunkbuster;
 
+import com.alihaine.bulchunkbuster.command.Confirmation;
 import com.alihaine.bulchunkbuster.command.GiveBuster;
 import com.alihaine.bulchunkbuster.file.BusterConfig;
 import com.alihaine.bulchunkbuster.listener.onBlockPlace;
-import com.alihaine.bulchunkbuster.listener.onChat;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -32,7 +32,7 @@ public class ChunkBuster extends JavaPlugin {
 
         this.getCommand("bulchunkbuster").setExecutor(new GiveBuster());
         if (busterConfig.getBlockBusterChatConfirmation())
-            Bukkit.getPluginManager().registerEvents(new onChat(), this);
+            this.getCommand("busterconfirmation").setExecutor(new Confirmation());
         Bukkit.getPluginManager().registerEvents(new onBlockPlace(), this);
 
         Bukkit.getLogger().info("--------------------BulChunkBuster plugin has been enabled--------------------");

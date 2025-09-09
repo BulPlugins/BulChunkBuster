@@ -18,6 +18,7 @@ public class BlockBuster {
         this.chunk = chunk;
         this.location = location;
         this.player = player;
+        player.sendMessage(busterConfig.getMessage("buster_run"));
         this.runBuster();
     }
 

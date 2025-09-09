@@ -1,9 +1,11 @@
 package com.alihaine.bulchunkbuster.file;
 
 import com.alihaine.bulchunkbuster.ChunkBuster;
+import net.md_5.bungee.api.chat.*;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -34,6 +36,8 @@ public class BusterConfig {
 
     private final long cooldown;
     private final int serverYMin;
+
+    private final BaseComponent[] chatConfirmation;
 
     private final HashMap<String, String> messages = new HashMap<>();
 
@@ -94,6 +98,23 @@ public class BusterConfig {
         ConfigurationSection configSection = config.getConfigurationSection("messages");
         for (String key : configSection.getKeys(false))
             this.messages.put(key, configSection.getString(key).replaceAll("&", "§"));
+
+        this.chatConfirmation = this.buildChatConfirmationComponent();
+    }
+
+    private BaseComponent[] buildChatConfirmationComponent() {
+        return new ComponentBuilder(this.getMessage("chat_confirmation"))
+                .append(this.getMessage("chat_confirmation_yes"))
+                .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/busterconfirmation yes"))
+                .append(" - ")
+                .event((ClickEvent) null)
+                .append(this.getMessage("chat_confirmation_no"))
+                .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/busterconfirmation no"))
+                .create();
+    }
+
+    public void sendChatConfirmationComponent(Player player) {
+        player.spigot().sendMessage(this.chatConfirmation);
     }
 
     public boolean isMaterialBlacklisted(Material material) {
