@@ -41,6 +41,10 @@ public class onBlockPlace implements Listener {
             player.sendMessage(busterConfig.getMessage("cooldown_error").replace("%time%", String.valueOf(cooldown)));
             return;
         }
+        if (!ChunkBuster.getSupportManager().runSupports(event)) {
+            player.sendMessage(busterConfig.getMessage("claim_error"));
+            return;
+        }
         if (this.busterConfig.getBlockBusterChatConfirmation()) {
             this.busterConfig.sendChatConfirmationComponent(player);
             ChunkBuster.getChunkBuster().addPlayerWaitForChatConfirmation(player, block.getLocation());

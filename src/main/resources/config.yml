@@ -25,9 +25,11 @@ black_list_worlds: [event, exampleNameWorld]
 cooldown_for_each_use: 10
 server_y_min: 0
 
-#Enable the claim system you use.
-only_in_faction_claim: false #saberFaction, factionUUID
-only_in_griefprevention_claim: false #https://www.spigotmc.org/resources/1884/
+#Enable the claim system you want to use, if enabled, players
+#must be in their own claims to place a block buster.
+supports:
+  factions: false #saberFaction, factionUUID
+  griefprevention: false #https://www.spigotmc.org/resources/1884/
 
 messages:
   buster_run: "&eStarting to bust the chunk.."
@@ -44,4 +46,5 @@ messages:
   chat_confirmation_cancel: "&cBuster canceled."
   chat_confirmation_block_error: "&cThe placed chunk buster block was destroyed before confirmation."
 
+  claim_error: "You can place chunk buster only in your own claims."
   no_permission: "&cYou don't have the permission to use blockbuster .."

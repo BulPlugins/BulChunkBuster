@@ -4,6 +4,7 @@ import com.alihaine.bulchunkbuster.command.Confirmation;
 import com.alihaine.bulchunkbuster.command.GiveBuster;
 import com.alihaine.bulchunkbuster.file.BusterConfig;
 import com.alihaine.bulchunkbuster.listener.onBlockPlace;
+import com.alihaine.bulchunkbuster.support.SupportManager;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -20,15 +21,17 @@ public class ChunkBuster extends JavaPlugin {
     public static final String PREFIX = "[BulChunkBuster] ";
     private static ChunkBuster chunkBuster;
     private static BusterConfig busterConfig;
+    private static SupportManager supportManager;
     private final HashMap<Player, Location> blockBusterWaitForChatConfirmation = new HashMap<>();
 
     @Override
     public void onEnable() {
-        this.updateChecker();
         Bukkit.getLogger().info("--------------------Starting to enable BulChunkBuster--------------------");
+        this.updateChecker();
         new Metrics(this, 27173);
         chunkBuster = this;
         busterConfig = new BusterConfig(this);
+        supportManager = new SupportManager(this.getConfig());
 
         this.getCommand("bulchunkbuster").setExecutor(new GiveBuster());
         if (busterConfig.getBlockBusterChatConfirmation())
@@ -41,6 +44,8 @@ public class ChunkBuster extends JavaPlugin {
     public static ChunkBuster getChunkBuster() { return chunkBuster; }
 
     public static BusterConfig getBusterConfig() { return busterConfig; }
+
+    public static SupportManager getSupportManager() { return supportManager; }
 
     public void addPlayerWaitForChatConfirmation(Player player, Location location) {
         this.blockBusterWaitForChatConfirmation.put(player, location);

@@ -3,6 +3,7 @@ main: com.alihaine.bulchunkbuster.ChunkBuster
 version: ${version}
 author: AliHaine
 api-version: 1.13
+softdepend: [Factions]
 commands:
   bulchunkbuster:
     description: Main command

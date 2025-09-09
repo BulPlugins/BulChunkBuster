@@ -3,8 +3,8 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
-group = "org.example"
-version = "0.2"
+group = "com.bul"
+version = "0.3"
 
 repositories {
     mavenCentral()
@@ -12,11 +12,18 @@ repositories {
         name = "aikar"
         url = uri("https://repo.aikar.co/content/groups/aikar/")
     }
+    maven { url = uri("https://jitpack.io") }
+    maven {
+        name = "CodeMC"
+        url = uri("https://repo.codemc.io/repository/maven-public/")
+    }
+    maven { url = uri("https://libraries.minecraft.net/") }
 }
 
 dependencies {
     compileOnly("org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT")
     implementation("org.bstats:bstats-bukkit:3.0.2")
+    compileOnly("com.github.SaberLLC:Saber-Factions:4.1.4-STABLE")
 }
 
 //Need to include and relocate bStats
