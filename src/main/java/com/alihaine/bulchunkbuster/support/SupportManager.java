@@ -21,7 +21,7 @@ public class SupportManager {
                 Bukkit.getLogger().warning("You enabled support for plugin " + key + " but the plugin is not found or not loaded.." );
                 continue;
             }
-            if (key.equals("faction"))
+            if (key.equals("factions"))
                 this.supports.add(new FactionSupport());
         }
 
