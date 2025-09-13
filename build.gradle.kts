@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.bul"
-version = "0.3"
+version = "0.4"
 
 repositories {
     mavenCentral()
@@ -18,12 +18,18 @@ repositories {
         url = uri("https://repo.codemc.io/repository/maven-public/")
     }
     maven { url = uri("https://libraries.minecraft.net/") }
+    maven {
+        name = "griefdefender"
+        url = uri("https://repo.glaremasters.me/repository/bloodshot")
+    }
 }
 
 dependencies {
     compileOnly("org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT")
     implementation("org.bstats:bstats-bukkit:3.0.2")
     compileOnly("com.github.SaberLLC:Saber-Factions:4.1.4-STABLE")
+    compileOnly(group = "com.griefdefender", name = "api", version = "2.1.0-SNAPSHOT")
+    compileOnly("com.github.GriefPrevention:GriefPrevention:16.18.2")
 }
 
 //Need to include and relocate bStats

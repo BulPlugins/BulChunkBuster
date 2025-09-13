@@ -30,6 +30,7 @@ server_y_min: 0
 supports:
   factions: false #saberFaction, factionUUID
   griefprevention: false #https://www.spigotmc.org/resources/1884/
+  griefdefender: false #https://www.spigotmc.org/resources/68900/
 
 messages:
   buster_run: "&eStarting to bust the chunk.."

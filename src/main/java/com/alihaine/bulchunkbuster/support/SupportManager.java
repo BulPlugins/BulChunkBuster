@@ -21,8 +21,17 @@ public class SupportManager {
                 Bukkit.getLogger().warning("You enabled support for plugin " + key + " but the plugin is not found or not loaded.." );
                 continue;
             }
-            if (key.equals("factions"))
+            if (key.equalsIgnoreCase("factions"))
                 this.supports.add(new FactionSupport());
+            else if (key.equalsIgnoreCase("GriefDefender"))
+                this.supports.add(new GriefDefenderSupport());
+            else if (key.equalsIgnoreCase("GriefPrevention"))
+                this.supports.add(new GriefPreventionSupport());
+            else {
+                Bukkit.getLogger().warning("Hook for plugin " + key + " impossible or not found");
+                continue;
+            }
+            Bukkit.getLogger().info("Hook loaded for plugin " + key);
         }
 
     }
