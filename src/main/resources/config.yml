@@ -24,6 +24,8 @@ black_list_worlds: [event, exampleNameWorld]
 
 cooldown_for_each_use: 10
 server_y_min: 0
+disable_flowing_in_busted_chunk: false
+server_flow_materials: [WATER, LAVA, STATIONARY_WATER, STATIONARY_LAVA]
 
 #Enable the claim system you want to use, if enabled, players
 #Must be in their own claims to place a block buster.

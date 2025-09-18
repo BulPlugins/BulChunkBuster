@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class BlockBuster {
+    private final BlockBusterManager blockBusterManager = ChunkBuster.getBlockBusterManager();
     private final BusterConfig busterConfig = ChunkBuster.getBusterConfig();
     private final Chunk chunk;
     private final Location location;
@@ -18,6 +19,7 @@ public class BlockBuster {
         this.chunk = chunk;
         this.location = location;
         this.player = player;
+        this.blockBusterManager.addUsedChunk(chunk);
         player.sendMessage(busterConfig.getMessage("buster_run"));
         this.runBuster();
     }

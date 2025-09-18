@@ -36,6 +36,8 @@ public class BusterConfig {
 
     private final long cooldown;
     private final int serverYMin;
+    private final boolean disableFlow;
+    private final List<Material> flowMaterials =  new ArrayList<>();
 
     private final BaseComponent[] chatConfirmation;
 
@@ -99,6 +101,18 @@ public class BusterConfig {
         for (String key : configSection.getKeys(false))
             this.messages.put(key, configSection.getString(key).replaceAll("&", "§"));
 
+        this.disableFlow = config.getBoolean("disable_flowing_in_busted_chunk");
+        if (this.disableFlow) {
+            final List<String> flowMaterialsString = config.getStringList("server_flow_materials");
+            for (String materialStr : flowMaterialsString) {
+                try {
+                    this.flowMaterials.add(Material.getMaterial(materialStr.toUpperCase()));
+                } catch (Exception e) {
+                    Bukkit.getLogger().warning(ChunkBuster.PREFIX + " The flow material " + materialStr + " was not found or don't exist in your version");
+                }
+            }
+        }
+
         this.chatConfirmation = this.buildChatConfirmationComponent();
     }
 
@@ -131,6 +145,8 @@ public class BusterConfig {
         return this.blockListWorlds.contains(world.getName());
     }
 
+    public boolean isFlowMaterial(Material material) { return this.flowMaterials.contains(material); }
+
     public Material getMaterialBuster() { return this.materialBuster; }
 
     public boolean getBlockBusterSneakConfirmation() {
@@ -162,6 +178,8 @@ public class BusterConfig {
     }
 
     public int getServerYMin() { return this.serverYMin; }
+
+    public boolean getDisableFlow() { return this.disableFlow; }
 
     public String getMessage(String key) {
         return this.messages.get(key);

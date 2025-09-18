@@ -2,6 +2,7 @@ package com.alihaine.bulchunkbuster.command;
 
 import com.alihaine.bulchunkbuster.ChunkBuster;
 import com.alihaine.bulchunkbuster.buster.BlockBuster;
+import com.alihaine.bulchunkbuster.buster.BlockBusterManager;
 import com.alihaine.bulchunkbuster.file.BusterConfig;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,16 +13,16 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Confirmation implements CommandExecutor {
-    private final ChunkBuster chunkBuster = ChunkBuster.getChunkBuster();
+    private final BlockBusterManager blockBusterManager = ChunkBuster.getBlockBusterManager();
     private final BusterConfig busterConfig = ChunkBuster.getBusterConfig();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length == 0) return true;
         final Player player = (Player) sender;
-        final Location location = chunkBuster.getWaitingLocation(player);
+        final Location location = blockBusterManager.getWaitingLocation(player);
         if (location == null) return true;
-        chunkBuster.removePlayerWaitForChatConfirmation(player);
+        blockBusterManager.removePlayerWaitForChatConfirmation(player);
         if (args[0].equalsIgnoreCase("yes")) {
             final Block block = location.getBlock();
             if (block.getType() != busterConfig.getMaterialBuster()) {
