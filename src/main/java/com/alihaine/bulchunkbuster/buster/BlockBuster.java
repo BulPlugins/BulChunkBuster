@@ -55,7 +55,10 @@ public class BlockBuster {
     private void asyncFillCurrentY(int y, BusterData busterData) {
         for (int z = 15; z >= 0; z--) {
             for (int x = 15; x >= 0; x--) {
-                Block block = chunk.getBlock(x, y, z);
+                Block block;
+                try {
+                    block = chunk.getBlock(x, y, z);
+                } catch (Exception ignored) { return; }
                 Material mat = block.getType();
                 if (mat == Material.AIR || busterConfig.isMaterialBlacklisted(mat)) continue;
                 busterData.getBlocks().add(block);
