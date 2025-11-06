@@ -23,17 +23,19 @@ public class Confirmation implements CommandExecutor {
         final Location location = blockBusterManager.getWaitingLocation(player);
         if (location == null) return true;
         blockBusterManager.removePlayerWaitForChatConfirmation(player);
-        if (args[0].equalsIgnoreCase("yes")) {
-            final Block block = location.getBlock();
-            if (block.getType() != busterConfig.getMaterialBuster()) {
-                player.sendMessage(busterConfig.getMessage("chat_confirmation_block_error"));
-                return true;
-            }
-            block.setType(Material.AIR);
-            new BlockBuster(block.getChunk(), block.getLocation(), player);
-        } else {
+        if (!args[0].equalsIgnoreCase("yes")) {
             player.sendMessage(busterConfig.getMessage("chat_confirmation_cancel"));
+            return true;
         }
+
+        final Block block = location.getBlock();
+        if (block.getType() != busterConfig.getMaterialBuster()) {
+            player.sendMessage(busterConfig.getMessage("chat_confirmation_block_error"));
+            return true;
+        }
+        block.setType(Material.AIR);
+        new BlockBuster(block.getChunk(), block.getLocation(), player);
+
         return true;
     }
 }
